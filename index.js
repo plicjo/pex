@@ -55,7 +55,7 @@ function transformErrors(error, ...preservedKeys) {
         [key]: val,
       };
     }
-    if (List.isList(val) && val.every(v => typeof v === 'string')) {
+    if (List.isList(val) && val.every(v => typeof v === 'string') && !preservedKeys.includes(key)) {
       return {
         ...memo,
         [key]: appendPeriods([...val]).join(' '),
