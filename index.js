@@ -22,7 +22,7 @@ function appendPeriods(data) {
   return data.map(d => `${d}.`);
 }
 
-function getNonEmptyObs(arr) {
+function getNonEmptyVals(arr) {
   return arr.filter(v => v.size > 0);
 }
 
@@ -73,7 +73,7 @@ function transformErrors(error, ...preservedKeys) {
           ...memo,
           [key]: compose(
             [appendPeriods, getUniques, flattenArray]
-          )(getNonEmptyObs(val).map(obj => reduceObj(obj))).join(' ')
+          )(getNonEmptyVals(val).map(obj => reduceObj(obj))).join(' ')
         };
       }
       if (Map.isMap(val)) {
