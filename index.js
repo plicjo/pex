@@ -1,6 +1,7 @@
 const Immutable = require('immutable');
 const assert = require('assert');
 const { List, Map, Set } = require('immutable');
+const compose = require('lodash/fp/compose');
 
 function flattenArray(arr) {
   return arr.reduce((memo, val, key) => [
@@ -70,14 +71,16 @@ function transformErrors(error, ...preservedKeys) {
       if (List.isList(val)) {
         return {
           ...memo,
-          [key]: appendPeriods(getUniques(flattenArray(getNonEmptyObs(val).map(obj => reduceObj(obj))))).join(' '),
+          [key]: compose(
+            [appendPeriods, getUniques, flattenArray]
+          )(getNonEmptyObs(val).map(obj => reduceObj(obj))).join(' ')
         };
       }
       if (Map.isMap(val)) {
         if (key === 'tag') {
           return {
             ...memo,
-            [key]: appendPeriods(reduceObj(val)).join(''),
+            [key]: compose([appendPeriods, reduceObj])(val).join('')
           };
         }
         return {
