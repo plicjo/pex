@@ -3,8 +3,23 @@ const assert = require('assert');
 const { List, Map, Set } = require('immutable');
 const transformErrors = require('./index');
 
+it('ignores empty objects', () => {
+  const errors = Immutable.fromJS({
+    names: [{}, {
+      first: ['Only alphanumeric characters are allowed'],
+      last: ['Only alphanumeric characters are allowed'],
+    }, {}],
+  });
+
+  const result = transformErrors(errors);
+
+  assert.deepEqual(result, Map({
+    names: 'Only alphanumeric characters are allowed.',
+  }));
+});
+
 it('concatenates errors into a single string', () => {
-  const errors = Map({
+  const errors = Immutable.fromJS({
     name: ['This field is required', 'Another error'],
     age: ['Only numeric characters are allowed'],
   });

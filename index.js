@@ -7,14 +7,27 @@ function transformErrors(errors) {
 
 function joinErrors(list_or_map) {
   if (Map.isMap(list_or_map)) {
-    return joinArray(list_or_map.flatten());
+    return joinArray(flatten(list_or_map));
   } else {
     return joinArray(list_or_map)
   }
 }
 
 function joinArray(array) {
-  return array.join('. ') + '.';
+  const foo = flatten(array)
+  return uniqueIfList(foo).join('. ') + '.';
+}
+
+function flatten(array) {
+  return array.flatten();
+}
+
+function uniqueIfList(list_or_map) {
+  if (Map.isMap(list_or_map)) {
+    return list_or_map;
+  } else {
+    return Set(list_or_map);
+  }
 }
 
 module.exports = transformErrors
