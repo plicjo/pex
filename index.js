@@ -1,20 +1,20 @@
 const Immutable = require('immutable');
-const { List, Map, Set } = require('immutable');
+const { List, Set } = require('immutable');
 
-function transformErrors(errors) {
-  return errors.mapEntries(([ key, value ]) => [ key, combineErrors(value)]);
+function transformErrors(errors, preserveKeys=[]) {
+  return errors.mapEntries(([ key, value ]) => [ key, parseErrors(value)]);
 }
 
-function combineErrors(list_or_map) {
-  return joinErrors(flatten(list_or_map));
-}
-
-function joinErrors(list_or_map) {
-  return uniqueIfList(list_or_map).join('. ') + '.';
+function parseErrors(list_or_map) {
+  return joinErrors(uniqueIfList(flatten(list_or_map)));
 }
 
 function flatten(list_or_map) {
   return list_or_map.flatten();
+}
+
+function joinErrors(list_or_map) {
+  return list_or_map.join('. ') + '.';
 }
 
 function uniqueIfList(list_or_map) {
