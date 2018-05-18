@@ -81,9 +81,22 @@ it('should tranform errors', () => {
   });
 
   const result = Map(transformErrors(errors));
+
   assert.deepEqual(result.toJS(), {
     name: 'This field is required.',
     age: 'This field is required. Only numeric characters are allowed.',
+    urls: [{}, {}, {
+      site: {
+        code: 'This site code is invalid.',
+        id: 'Unsupported id.',
+      },
+    }],
+    url: {
+      site: {
+        code: 'This site code is invalid.',
+        id: 'Unsupported id.',
+      },
+    },
     tags: 'Only alphanumeric characters are allowed. Third error. ' +
     'Minumum length of 10 characters is required.',
     tag: 'Only alphanumeric characters are allowed.',
