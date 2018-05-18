@@ -1,8 +1,8 @@
 const Immutable = require('immutable');
 const { List, Map, Set } = require('immutable');
 
-function transformErrors(error, ...preservedKeys) {
-  // Start from Ground Zero
+function transformErrors(errors) {
+  return errors.mapEntries(([ key, value ]) => [ key, (value.join('. ') + '.')])
 }
 
 module.exports = transformErrors
