@@ -14,8 +14,7 @@ function joinErrors(list_or_map) {
 }
 
 function joinArray(array) {
-  const foo = flatten(array)
-  return uniqueIfList(foo).join('. ') + '.';
+  return uniqueIfList(flatten(array)).join('. ') + '.';
 }
 
 function flatten(array) {
