@@ -15,8 +15,12 @@ function defaultParse(list_or_map) {
 }
 
 function preservedKeysParse(map) {
-  return map.map((innerMap) => {
-    return transformErrors(innerMap);
+  return map.map((innerMapOrList) => {
+    if (List.isList(innerMapOrList)) {
+      return defaultParse(innerMapOrList);
+    } else {
+      return preservedKeysParse(innerMapOrList);
+    }
   })
 }
 

@@ -65,6 +65,28 @@ it('preserves the nested structure if specified', () => {
   }));
 });
 
+it('preserves deeply nested structure if specified', () => {
+  const errors = Immutable.fromJS({
+    urls: [{}, {}, {
+      site: {
+        code: ['This site code is invalid'],
+        id: ['Unsupported id'],
+      }
+    }],
+  })
+
+  const result = transformErrors(errors, List(['urls']));
+
+  assert.deepEqual(result, Immutable.fromJS({
+    urls: [{}, {}, {
+      site: {
+        code: 'This site code is invalid.',
+        id: 'Unsupported id.',
+      },
+    }],
+  }));
+});
+
 it('should tranform errors', () => {
   const errors = Immutable.fromJS({
     name: ['This field is required'],
