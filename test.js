@@ -14,7 +14,22 @@ it('concatenates errors into a single string', () => {
   assert.deepEqual(result, Map({
     name: 'This field is required. Another error.',
     age: 'Only numeric characters are allowed.'
-  }))
+  }));
+});
+
+it('defaults to concatenating errors to the top level', () => {
+  const errors = Immutable.fromJS({
+    name: {
+      first: ['Only alphanumeric characters are allowed'],
+      last: ['Only alphanumeric characters are allowed'],
+    },
+  })
+
+  const result = transformErrors(errors);
+
+  assert.deepEqual(result, Map({
+    name: 'Only alphanumeric characters are allowed.',
+  }));
 });
 
 // it('should tranform errors', () => {
