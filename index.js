@@ -6,11 +6,7 @@ function transformErrors(errors) {
 }
 
 function joinErrors(list_or_map) {
-  if (Map.isMap(list_or_map)) {
-    return joinArray(flatten(list_or_map));
-  } else {
-    return joinArray(list_or_map)
-  }
+  return joinArray(flatten(list_or_map));
 }
 
 function joinArray(array) {
