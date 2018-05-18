@@ -1,8 +1,7 @@
-const Immutable = require('immutable');
 const { List, Set } = require('immutable');
 
 function transformErrors(errors, preserveKeys=[]) {
-  return errors.mapEntries(([ key, value ]) => [ key, parseErrors(value)]);
+  return errors.mapEntries(([ key, value ]) => [ key, parseErrors(value) ]);
 }
 
 function parseErrors(list_or_map) {

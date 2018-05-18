@@ -80,7 +80,7 @@ it('should tranform errors', () => {
     },
   });
 
-  const result = Map(transformErrors(errors));
+  const result = Map(transformErrors(errors, ['urls', 'url']));
 
   assert.deepEqual(result.toJS(), {
     name: 'This field is required.',
