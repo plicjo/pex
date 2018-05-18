@@ -10,13 +10,13 @@ function transformErrors(errors, preservedKeys=List()) {
   );
 }
 
-function defaultParse(list_or_map) {
-  return joinErrors(uniqueIfList(flatten(list_or_map)));
+function defaultParse(listOrMap) {
+  return joinErrors(uniqueIfList(flatten(listOrMap)));
 }
 
 function preservedKeysParse(map) {
   return map.map((innerMapOrList) => {
-    if (List.isList(innerMapOrList)) {
+    if (isList(innerMapOrList)) {
       return defaultParse(innerMapOrList);
     } else {
       return preservedKeysParse(innerMapOrList);
@@ -24,16 +24,20 @@ function preservedKeysParse(map) {
   })
 }
 
-function flatten(list_or_map) {
-  return list_or_map.flatten();
+function flatten(listOrMap) {
+  return listOrMap.flatten();
 }
 
-function joinErrors(list_or_map) {
-  return list_or_map.join('. ') + '.';
+function joinErrors(listOrMap) {
+  return listOrMap.join('. ') + '.';
 }
 
-function uniqueIfList(list_or_map) {
-  return List.isList(list_or_map) ? Set(list_or_map) : list_or_map;
+function isList(listOrMap) {
+  return List.isList(listOrMap);
+}
+
+function uniqueIfList(listOrMap) {
+  return isList(listOrMap) ? Set(listOrMap) : listOrMap;
 }
 
 module.exports = transformErrors;
