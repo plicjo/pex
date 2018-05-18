@@ -1,25 +1,29 @@
 const { List, Set } = require('immutable');
 
-function transformErrors(errors, preservedKeys=List()) {
-  return errors.mapEntries(([ key, value ]) => {
-    if(preservedKeys.includes(key)) {
-      return [ key, preservedKeysParse(value) ];
-    } else {
-      return [ key, defaultParse(value) ]};
-    }
-  );
+function transformErrors(errors, preservedStructures=List()) {
+  return errors.mapEntries(([ errorName, errorsList ]) => {
+    return [errorName, parse(errorsList, preservedStructures, errorName)];
+  });
 }
 
-function defaultParse(listOrMap) {
+function parse(errorsList, preservedStructures, key) {
+  if(preservedStructures.includes(key)) {
+    return preserveStructureParse(errorsList);
+  } else {
+    return flattenedParse(errorsList);
+  }
+}
+
+function flattenedParse(listOrMap) {
   return joinErrors(uniqueIfList(flatten(listOrMap)));
 }
 
-function preservedKeysParse(map) {
+function preserveStructureParse(map) {
   return map.map((innerMapOrList) => {
     if (isList(innerMapOrList)) {
-      return defaultParse(innerMapOrList);
+      return flattenedParse(innerMapOrList);
     } else {
-      return preservedKeysParse(innerMapOrList);
+      return preserveStructureParse(innerMapOrList);
     }
   })
 }
