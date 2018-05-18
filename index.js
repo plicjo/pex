@@ -18,11 +18,7 @@ function flatten(array) {
 }
 
 function uniqueIfList(list_or_map) {
-  if (Map.isMap(list_or_map)) {
-    return list_or_map;
-  } else {
-    return Set(list_or_map);
-  }
+  return Map.isMap(list_or_map) ? list_or_map : Set(list_or_map);
 }
 
 module.exports = transformErrors
