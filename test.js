@@ -47,6 +47,24 @@ it('defaults to concatenating errors to the top level', () => {
   }));
 });
 
+it('preserves the nested structure if specified', () => {
+  const errors = Immutable.fromJS({
+    names: [{}, {
+      first: ['Only alphanumeric characters are allowed'],
+      last: ['Only alphanumeric characters are allowed'],
+    }, {}],
+  })
+
+  const result = transformErrors(errors, List(['names']));
+
+  assert.deepEqual(result, Immutable.fromJS({
+    names: [{}, {
+      first: 'Only alphanumeric characters are allowed.',
+      last: 'Only alphanumeric characters are allowed.',
+    }, {}],
+  }));
+});
+
 it('should tranform errors', () => {
   const errors = Immutable.fromJS({
     name: ['This field is required'],
@@ -80,7 +98,7 @@ it('should tranform errors', () => {
     },
   });
 
-  const result = Map(transformErrors(errors, ['urls', 'url']));
+  const result = Map(transformErrors(errors, List(['urls', 'url'])));
 
   assert.deepEqual(result.toJS(), {
     name: 'This field is required.',

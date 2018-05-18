@@ -1,11 +1,23 @@
 const { List, Set } = require('immutable');
 
-function transformErrors(errors, preserveKeys=[]) {
-  return errors.mapEntries(([ key, value ]) => [ key, parseErrors(value) ]);
+function transformErrors(errors, preservedKeys=List()) {
+  return errors.mapEntries(([ key, value ]) => {
+    if(preservedKeys.includes(key)) {
+      return [ key, preservedKeysParse(value) ];
+    } else {
+      return [ key, defaultParse(value) ]};
+    }
+  );
 }
 
-function parseErrors(list_or_map) {
+function defaultParse(list_or_map) {
   return joinErrors(uniqueIfList(flatten(list_or_map)));
+}
+
+function preservedKeysParse(map) {
+  return map.map((innerMap) => {
+    return transformErrors(innerMap);
+  })
 }
 
 function flatten(list_or_map) {
